@@ -19,7 +19,7 @@ The following steps detail how the container was created, but you should not hav
 ```bash
     cd Lake_Problem_DPS && mkdir Docker
     cp -r ~/NixTemplates/Base/OpenMPI/* Docker/
-    cp -r ~/NixTemplates/Utils/* Docker/
+    cp ~/NixTemplates/Utils/* Docker/
     cp ~/NixTemplates/Base/alpine_envs.sh Docker/
     cp ~/NixTemplates/docker-compose-openmpi.* Docker/
 ```
