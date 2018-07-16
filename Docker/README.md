@@ -23,19 +23,22 @@ The following steps detail how the container was created, but you should not hav
     cp ~/NixTemplates/Base/alpine_envs.sh Docker/
     cp ~/NixTemplates/docker-compose-openmpi.* Docker/
 ```
-4. Set up ssh
+4. Correct a few paths in the scripts
+```bash
+    find Docker -type f -exec sed -i 's/Base\/OpenMPI/Docker/g' {} \;
+    find Docker -type f -exec sed -i 's/Base/Docker/g' {} \;
+    find Docker -type f -exec sed -i 's/Utils/Docker/g' {} \;
+```
+
+## Set up ssh
+
+For security, ssh keys are not included in the repository, so you will need to setup your own:
 ```bash
     cd Docker
     mkdir ssh
     cd ssh && ssh-keygen -t rsa -f id_rsa.mpi -N '' && cd ..
     echo "StrictHostKeyChecking no" > ssh/config
     chmod 500 ssh && chmod 400 ssh/* && cd ..
-```
-5. Correct a few paths
-```bash
-    find Docker -type f -exec sed -i 's/Base\/OpenMPI/Docker/g' {} \;
-    find Docker -type f -exec sed -i 's/Base/Docker/g' {} \;
-    find Docker -type f -exec sed -i 's/Utils/Docker/g' {} \;
 ```
 
 ## Building and Testing
