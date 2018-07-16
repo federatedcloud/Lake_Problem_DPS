@@ -43,14 +43,14 @@ The following steps detail how the container was created, but you should not hav
 **Simple build**
 
 ```bash
-source Docker/build.sh
+    source Docker/build.sh
 ```
 
 **Testing OpenMPI**
 
 Start 3 MPI nodes:
 ```bash
-cd Docker && source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
+    cd Docker && source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
 ```
 Note this will call `Docker/build.sh`, so no need to do both.
 
