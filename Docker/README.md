@@ -53,7 +53,7 @@ For security, ssh keys are not included in the repository, so you will need to s
 
 Start 3 MPI nodes:
 ```bash
-    cd Docker && source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
+    source Docker/docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
 ```
 Note this will call `Docker/build.sh`, so no need to do both.
 
