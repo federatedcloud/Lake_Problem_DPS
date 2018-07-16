@@ -38,25 +38,20 @@ source Docker/build.sh
 
 **Testing OpenMPI**
 
-Note this will call the above OpenMPI `build.sh`, so no need to do both:
-
+Start 3 MPI nodes:
 ```bash
 cd Docker && source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
 ```
+Note this will call `Docker/build.sh`, so no need to do both.
 
 Now from another terminal on the host system: 
 1. Connect to the head node
-```bash
-docker exec -u nixuser -it nixtemplates_mpi_head_1 /bin/sh
-```
+    * `docker exec -u nixuser -it docker_mpi_head_1 /bin/sh`
 2. Start the relevant environment
-```bash
-nix-shell . # should be from /nixenv/nixuser, or wherever default.nix was copied to
-```
-3. Run the mpi demo:
-```bash
-mpirun -n 2 python /home/nixuser/mpi4py_benchmarks/all_tests.py
-```
+   * `nix-shell . # should be from /nixenv/nixuser, or wherever default.nix was copied to`
+3. Run the MPI demo:
+   * `mpirun -n 2 python /home/nixuser/mpi4py_benchmarks/all_tests.py`
+
 
 To stop the container set, just press `Ctrl-C` in the terminal where you ran
 `docker-compose-openmpi.sh`.
