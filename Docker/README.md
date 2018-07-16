@@ -13,23 +13,19 @@ The following steps detail how the container was created, but you should not hav
     * `git clone https://github.com/federatedcloud/Lake_Problem_DPS`
 3. Copy the OpenMPI template and associated files to the correct place
     * `cd Lake_Problem_DPS && mkdir Docker`
-    * `cp -r ~/NixTemplates/Base/OpenMPI/* ~/Lake_Problem_DPS/Docker/`
-    * `cp -r ~/NixTemplates/Utils/* ~/Lake_Problem_DPS/Docker/`
-    * `cp ~/NixTemplates/Base/alpine_envs.sh ~/Lake_Problem_DPS/Docker/`
-    * `cp ~/NixTemplates/docker-compose-openmpi.* ~/Lake_Problem_DPS/Docker/`
+    * `cp -r ~/NixTemplates/Base/OpenMPI/* Docker/`
+    * `cp -r ~/NixTemplates/Utils/* Docker/`
+    * `cp ~/NixTemplates/Base/alpine_envs.sh Docker/`
+    * `cp ~/NixTemplates/docker-compose-openmpi.* Docker/`
 4. Set up ssh
-    * `cd Lake_Problem_DPS/Docker`
+    * `cd Docker`
     * `mkdir ssh`
     * `cd ssh && ssh-keygen -t rsa -f id_rsa.mpi -N '' && cd ..`
     * `echo "StrictHostKeyChecking no" > ssh/config`
     * `chmod 500 ssh && chmod 400 ssh/* && cd ..`
-5. Edit Dockerfile
-    * Replace all occurances of `.openmpi` with `.docker`
-    * 
-    * 
-    * 
-    * 
-6. 
-7. 
+5. Correct a few paths
+    * `find Docker -type f -exec sed -i 's/Base\/OpenMPI/Docker/g' {} \;`
+    * `find Docker -type f -exec sed -i 's/Base/Docker/g' {} \;`
+    * `find Docker -type f -exec sed -i 's/Utils/Docker/g' {} \;`
 
 
