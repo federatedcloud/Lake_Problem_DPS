@@ -33,7 +33,7 @@ The following steps detail how the container was created, but you should not hav
 **Simple build**
 
 ```bash
-source Base/OpenMPI/build.sh
+source Docker/build.sh
 ```
 
 **Testing OpenMPI**
@@ -41,15 +41,20 @@ source Base/OpenMPI/build.sh
 Note this will call the above OpenMPI `build.sh`, so no need to do both:
 
 ```bash
-source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
+cd Docker && source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
 ```
 
-Now from another terminal on the host system: 1) connect to the head node,
-2) start the relevant environment with `nix-shell`, and 3) run the mpi demo:
-
-```
+Now from another terminal on the host system: 
+1. Connect to the head node
+```bash
 docker exec -u nixuser -it nixtemplates_mpi_head_1 /bin/sh
+```
+2. Start the relevant environment
+```bash
 nix-shell . # should be from /nixenv/nixuser, or wherever default.nix was copied to
+```
+3. Run the mpi demo:
+```bash
 mpirun -n 2 python /home/nixuser/mpi4py_benchmarks/all_tests.py
 ```
 
