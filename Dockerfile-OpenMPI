@@ -1,13 +1,12 @@
 ARG BASEOS
-FROM nix_${BASEOS}_base:23635e458b36268294cee9967988d5516bccc689
+FROM nix_${BASEOS}_base:44cce3d948f38408bc97addb699ba02cc479df8e
 
 USER root
-ARG BASEDIR
 ARG ADDUSER
 
-COPY $BASEDIR/config.nix $HOME/.config/nixpkgs/
-COPY $BASEDIR/dev-env.nix $ENVSDIR/
-COPY $BASEDIR/persist-env.sh $ENVSDIR/
+COPY Docker/config.nix $HOME/.config/nixpkgs/
+COPY Docker/dev-env.nix $ENVSDIR/
+COPY Docker/persist-env.sh $ENVSDIR/
 RUN chown -R $nixuser:$nixuser $ENVSDIR
 
 #
@@ -48,10 +47,10 @@ ENV SSHDIR ${HOME}/.ssh/
 
 RUN mkdir -p ${SSHDIR}
 
-ADD $BASEDIR/ssh/config ${SSHDIR}/config
-ADD $BASEDIR/ssh/id_rsa.mpi ${SSHDIR}/id_rsa
-ADD $BASEDIR/ssh/id_rsa.mpi.pub ${SSHDIR}/id_rsa.pub
-ADD $BASEDIR/ssh/id_rsa.mpi.pub ${SSHDIR}/authorized_keys
+ADD Docker/ssh/config ${SSHDIR}/config
+ADD Docker/ssh/id_rsa.mpi ${SSHDIR}/id_rsa
+ADD Docker/ssh/id_rsa.mpi.pub ${SSHDIR}/id_rsa.pub
+ADD Docker/ssh/id_rsa.mpi.pub ${SSHDIR}/authorized_keys
 
 USER root
 
@@ -61,42 +60,26 @@ RUN chmod -R 600 ${SSHDIR}* && \
 # ------------------------------------------------------------
 # Configure OpenMPI
 # ------------------------------------------------------------
-#
-#RUN rm -fr ${HOME}/.openmpi && mkdir -p ${HOME}/.openmpi
-#ADD $BASEDIR/default-mca-params.conf ${HOME}/.openmpi/mca-params.conf
-#RUN chown -R ${nixuser}:${nixuser} ${HOME}/.openmpi
 
-# ------------------------------------------------------------
-# Configure OpenMPI
-# ------------------------------------------------------------
-
-RUN rm -fr ${HOME}/.docker && mkdir -p ${HOME}/.docker
-ADD $BASEDIR/default-mca-params.conf ${HOME}/.docker/mca-params.conf
-RUN chown -R ${nixuser}:${nixuser} ${HOME}/.docker
+RUN rm -fr ${HOME}/.openmpi && mkdir -p ${HOME}/.openmpi
+ADD Docker/default-mca-params.conf ${HOME}/.openmpi/mca-params.conf
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/.openmpi
 
 # ------------------------------------------------------------
 # Copy MPI4PY example scripts
 # ------------------------------------------------------------
 
-#ENV TRIGGER 1
+ENV TRIGGER 1
 
-#ADD $BASEDIR/mpi4py_benchmarks ${HOME}/mpi4py_benchmarks
-#RUN chown -R ${nixuser}:${nixuser} ${HOME}/mpi4py_benchmarks
+ADD Docker/mpi4py_benchmarks ${HOME}/mpi4py_benchmarks
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/mpi4py_benchmarks
 
 #Copy this last to prevent rebuilds when changes occur in them:
-COPY $BASEDIR/entrypoint* $ENVSDIR/
-COPY $BASEDIR/default.nix $ENVSDIR/
+COPY Docker/entrypoint* $ENVSDIR/
+COPY Docker/default.nix $ENVSDIR/
 
 RUN chown $nixuser:$nixuser $ENVSDIR/entrypoint
 ENV PATH="${PATH}:/usr/local/bin"
 
 EXPOSE 22
 ENTRYPOINT ["/bin/sh", "./entrypoint"]
-
-# ------------------------------------------------------------
-# Copy Lake Problem code 
-# ------------------------------------------------------------
-
-
-
-

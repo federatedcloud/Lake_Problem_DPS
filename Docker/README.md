@@ -18,48 +18,42 @@ The following steps detail how the container was created, but you should not hav
 3. Copy the OpenMPI template and associated files to the correct place
 ```bash
     cd Lake_Problem_DPS && mkdir Docker
-    cp -r ~/NixTemplates/Base/OpenMPI/* Docker/
+    cp -r ~/NixTemplates/OpenMPI/* Docker/
     cp ~/NixTemplates/Utils/* Docker/
-    cp ~/NixTemplates/Base/alpine_envs.sh Docker/
-    cp ~/NixTemplates/docker-compose-openmpi.* Docker/
+    cp ~/NixTemplates/Base/alpine_* Docker/
+    cp ~/NixTemplates/docker-compose-openmpi.* .
+    cp ~/NixTemplates/Dockerfile-OpenMPI .
+    cp ~/NixTemplates/build-openmpi.sh .
 ```
 4. Correct a few paths in the scripts
 ```bash
-    find Docker -type f -exec sed -i 's/Base\/OpenMPI/Docker/g' {} \;
+    find Docker -type f -exec sed -i 's/OpenMPI/Docker/g' {} \;
     find Docker -type f -exec sed -i 's/Base/Docker/g' {} \;
     find Docker -type f -exec sed -i 's/Utils/Docker/g' {} \;
 ```
+Note that `build-openmpi.sh` is not in the Docker folder, so paths will have to be corrected manually.
 
-## Set up ssh
-
-For security, ssh keys are not included in the repository, so you will need to setup your own:
-```bash
-    cd Docker
-    mkdir ssh
-    cd ssh && ssh-keygen -t rsa -f id_rsa.mpi -N '' && cd ..
-    echo "StrictHostKeyChecking no" > ssh/config
-    chmod 500 ssh && chmod 400 ssh/* && cd ..
-```
+5. In the Dockerfile (named `Dockerfile-OpenMPI`), change directory paths including `OpenMPI/`, `Utils/`, or `Base/` to `Docker/`
 
 ## Building and Testing
 
 **Simple build**
 
 ```bash
-    source Docker/build.sh
+    source build-openmpi.sh
 ```
 
 **Testing OpenMPI**
 
 Start 3 MPI nodes:
 ```bash
-    source Docker/docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
+    source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
 ```
 Note this will call `Docker/build.sh`, so no need to do both.
 
 Now from another terminal on the host system you can connect to the head node, start the `nix-shell`, and run the demo:
 ```bash
-    docker exec -u nixuser -it docker_mpi_head_1 /bin/sh
+    docker exec -u nixuser -it lake_problem_dps_mpi_head_1 /bin/sh
     nix-shell . # should be from /nixenv/nixuser, or wherever default.nix was copied to
     mpirun -n 2 python /home/nixuser/mpi4py_benchmarks/all_tests.py
 ```
