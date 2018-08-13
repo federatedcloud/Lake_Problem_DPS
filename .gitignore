@@ -1,2 +1,9 @@
 # Don't store ssh keys
 ssh/
+
+# Temporary files
+*.swp
+
+# Licensed code
+borg/
+
