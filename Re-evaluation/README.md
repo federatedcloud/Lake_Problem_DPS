@@ -11,7 +11,7 @@ Contents:
 
 `Lake_params.txt`: file listing the uncertain parameters and ranges they are sampled over to generate alternative SOWs
 
-`sample_parameters.sh`: job script to generate 1000 alternative SOWs for the re-evaluation. This should create a file called 'LHsamples.txt'.
+`sample_parameters.sh`: job script to generate 1000 alternative SOWs for the re-evaluation. This should create a file called `LHsamples.txt`.
 
 To run the re-evaluation:
 * Generate alternative SOWs (`LHsamples.txt`) in which to evaluate the different policies by running the following command (you may need to change the version of the MOEAFramework given on line 3):   
@@ -29,4 +29,4 @@ You can change the number of nodes and processors on line 3 of `resimulateDPS.sh
 `python calcRobustness.py`.   
 This should write `DPSrobustness.txt` and `ITrobustness.txt` to this directory.
 
-Next, go to the FigureGeneration directory (`cd ./../FigureGeneration`) to generate the plots found in Quinn et al. (In Review)
+Next, go to the FigureGeneration directory (`cd ./../FigureGeneration`) to generate the plots found in [Quinn et al. (2017)](https://doi.org/10.1016/j.envsoft.2017.02.017)
