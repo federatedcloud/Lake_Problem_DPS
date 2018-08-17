@@ -66,6 +66,24 @@ ADD Docker/default-mca-params.conf ${HOME}/.openmpi/mca-params.conf
 RUN chown -R ${nixuser}:${nixuser} ${HOME}/.openmpi
 
 # ------------------------------------------------------------
+# Copy Lake_Problem_DPS code
+# ------------------------------------------------------------
+
+COPY DataInPaper ${HOME}/Lake_Problem_DPS/DataInPaper
+COPY FigureGeneration ${HOME}/Lake_Problem_DPS/FigureGeneration
+COPY Optimization ${HOME}/Lake_Problem_DPS/Optimization
+COPY Re-evaluation ${HOME}/Lake_Problem_DPS/Re-evaluation
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/DataInPaper
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/FigureGeneration
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Optimization
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Re-evaluation
+
+
+# TODO: remove borg before making public.  Temporary for testing.
+
+
+
+# ------------------------------------------------------------
 # Copy MPI4PY example scripts
 # ------------------------------------------------------------
 
