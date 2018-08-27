@@ -73,6 +73,10 @@ COPY DataInPaper ${HOME}/Lake_Problem_DPS/DataInPaper
 COPY FigureGeneration ${HOME}/Lake_Problem_DPS/FigureGeneration
 COPY Optimization ${HOME}/Lake_Problem_DPS/Optimization
 COPY Re-evaluation ${HOME}/Lake_Problem_DPS/Re-evaluation
+
+COPY Optimization/moeaframework.h ${HOME}/Lake_Problem_DPS/Optimization/borg
+COPY Optimization/moeaframework.c ${HOME}/Lake_Problem_DPS/Optimization/borg
+
 RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/DataInPaper
 RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/FigureGeneration
 RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Optimization

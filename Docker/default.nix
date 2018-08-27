@@ -15,6 +15,20 @@ let
       cp -v $src $out/MOEAFramework-2.12-Demo.jar
     '';
   };
+  Pareto = stdenv.mkDerivation {
+    name = "Pareto";
+    
+    src = fetchurl {
+      url = https://github.com/matthewjwoodruff/pareto.py/archive/1.1.1-3.tar.gz;
+      sha256 = "1k057g9rgm4a9k8nfkibrqxh56kqkbs635f5xmgbzlbcchbxzp4p";
+    };
+    phases = "installPhase";
+    
+    installPhase = ''
+      mkdir -p $out/
+      tar -C $out/ -xzf $src
+    '';
+  };
 in
 stdenv.mkDerivation {
   name = "impurePythonEnv";
@@ -40,15 +54,13 @@ stdenv.mkDerivation {
     # Project code dependencies
     #
     MOEAFramework
+    Pareto
     
   ];
-  #postBuild = ''
-  #  echo "AAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHH" > /opt/diditwork.txt
-  #  cp ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar /opt
-  #'';
   src = null;
   shellHook = ''
     export LANG=en_US.UTF-8
-    cp ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/
+    cp ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
+    cp ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
   '';
 }
