@@ -61,7 +61,9 @@ stdenv.mkDerivation {
   src = null;
   shellHook = ''
     export LANG=en_US.UTF-8
-    cp ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
-    cp ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
+    cp -n ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
+    cp -n ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
   '';
 }
+      #cp $out/MOEAFramework02.12.Demo.jar ~/Lake_Problem_DPS/Optimization
+      #cp $out/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
