@@ -55,6 +55,7 @@ stdenv.mkDerivation {
     #
     MOEAFramework
     Pareto
+    boost
     
   ];
   src = null;
