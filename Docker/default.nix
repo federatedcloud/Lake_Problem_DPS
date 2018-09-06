@@ -12,7 +12,8 @@ let
     
     installPhase = ''
       mkdir -p $out/
-      cp -v $src $out/MOEAFramework-2.12-Demo.jar
+      cp $src $out/MOEAFramework-2.12-Demo.jar
+      cp $out/MOEAFramework-2.12-Demo.jar ~nixuser/Lake_Problem_DPS/Optimization
     '';
   };
   Pareto = stdenv.mkDerivation {
@@ -27,8 +28,14 @@ let
     installPhase = ''
       mkdir -p $out/
       tar -C $out/ -xzf $src
+      cp $out/pareto.py-1.1.1-3/pareto.py ~nixuser/Lake_Problem_DPS/Optimization
     '';
   };
+#  LakeProblem = stdenv.mkDerivation {
+#    name = "LakeProblem"
+#    
+#    
+#  };
 in
 stdenv.mkDerivation {
   name = "impurePythonEnv";
@@ -56,6 +63,8 @@ stdenv.mkDerivation {
     MOEAFramework
     Pareto
     boost
+#    LakeProblem
+    gdb
     
   ];
   src = null;
@@ -63,7 +72,6 @@ stdenv.mkDerivation {
     export LANG=en_US.UTF-8
     cp -n ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
     cp -n ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
+    cp -rn ${boost.out}/lib ~/
   '';
 }
-      #cp $out/MOEAFramework02.12.Demo.jar ~/Lake_Problem_DPS/Optimization
-      #cp $out/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
