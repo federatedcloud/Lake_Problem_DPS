@@ -6,5 +6,4 @@ make
 mkdir -p runtime
 mkdir -p sets
 
-cd ..
 
