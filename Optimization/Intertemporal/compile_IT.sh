@@ -1,10 +1,10 @@
 #!/bin/bash
 
-cd ~/Lake_Problem_DPS/Optimization/Intertemporal
+cd ~nixuser/Lake_Problem_DPS/Optimization/Intertemporal
 
 make
-mkdir runtime
-mkdir sets
+mkdir -p runtime
+mkdir -p sets
 
 cd ..
 

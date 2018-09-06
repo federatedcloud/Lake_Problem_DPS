@@ -1,10 +1,16 @@
 #!/bin/bash
 
-cd ~/Lake_Problem_DPS/Optimization/DPS
+cd ~nixuser/Lake_Problem_DPS/Optimization/borg
 
 make
-mkdir runtime
-mkdir sets
+
+cd ~nixuser/Lake_Problem_DPS/Optimization/DPS
+
+rm *.o
+
+make
+mkdir -p runtime
+mkdir -p sets
 
 cd ..
 
