@@ -1,7 +1,7 @@
 # Makefile for DPS lake problem
 CXX = mpiCC
 CXXFLAGS = -c -Wall
-INC = -I /opt/boost/1.54.0/include
+INC = -I ~nixuser/lib
 LIBS = -lm
 UNAME_S = $(shell uname -s)
 
