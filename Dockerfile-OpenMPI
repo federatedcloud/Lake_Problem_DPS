@@ -85,7 +85,10 @@ RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Re-evaluation
 
 # TODO: remove borg before making public.  Temporary for testing.
 
-
+USER $nixuser
+COPY Docker/default.nix $ENVSDIR/
+RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix
+USER root
 
 # ------------------------------------------------------------
 # Copy MPI4PY example scripts
@@ -98,7 +101,7 @@ RUN chown -R ${nixuser}:${nixuser} ${HOME}/mpi4py_benchmarks
 
 #Copy this last to prevent rebuilds when changes occur in them:
 COPY Docker/entrypoint* $ENVSDIR/
-COPY Docker/default.nix $ENVSDIR/
+#COPY Docker/default.nix $ENVSDIR/
 
 RUN chown $nixuser:$nixuser $ENVSDIR/entrypoint
 ENV PATH="${PATH}:/usr/local/bin"

@@ -13,7 +13,6 @@ let
     installPhase = ''
       mkdir -p $out/
       cp $src $out/MOEAFramework-2.12-Demo.jar
-      cp $out/MOEAFramework-2.12-Demo.jar ~nixuser/Lake_Problem_DPS/Optimization
     '';
   };
   Pareto = stdenv.mkDerivation {
@@ -28,9 +27,14 @@ let
     installPhase = ''
       mkdir -p $out/
       tar -C $out/ -xzf $src
-      cp $out/pareto.py-1.1.1-3/pareto.py ~nixuser/Lake_Problem_DPS/Optimization
     '';
   };
+#  Borg = stdenv.mkDerivation {
+#    name = "Borg";
+#    
+#    src = fetchurl {
+#      url = https://sk8foraether@bitbucket.org/dmh309/serial-borg-moea;
+#  };
 #  LakeProblem = stdenv.mkDerivation {
 #    name = "LakeProblem"
 #    
@@ -63,8 +67,8 @@ stdenv.mkDerivation {
     MOEAFramework
     Pareto
     boost
+#    Borg
 #    LakeProblem
-    gdb
     
   ];
   src = null;
@@ -73,5 +77,7 @@ stdenv.mkDerivation {
     cp -n ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
     cp -n ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
     cp -rn ${boost.out}/lib ~/
+    source ~/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh
+    source ~/Lake_Problem_DPS/Optimization/Intertemporal/compile_IT.sh
   '';
 }

@@ -6,7 +6,7 @@ make
 
 cd ~nixuser/Lake_Problem_DPS/Optimization/DPS
 
-rm *.o
+#rm *.o
 
 make
 mkdir -p runtime
