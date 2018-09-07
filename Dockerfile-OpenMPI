@@ -87,8 +87,11 @@ RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Re-evaluation
 
 USER $nixuser
 COPY Docker/default.nix $ENVSDIR/
-RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix
+RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix --run ${HOME}/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh
+RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix --run ${HOME}/Lake_Problem_DPS/Optimization/Intertemporal/compile_IT.sh
 USER root
+
+RUN passwd -d $nixuser
 
 # ------------------------------------------------------------
 # Copy MPI4PY example scripts

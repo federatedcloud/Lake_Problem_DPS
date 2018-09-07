@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-cd ~nixuser/Lake_Problem_DPS/Optimization/borg
+cd /home/nixuser/Lake_Problem_DPS/Optimization/borg
 
 make
 
-cd ~nixuser/Lake_Problem_DPS/Optimization/DPS
+cd /home/nixuser/Lake_Problem_DPS/Optimization/DPS
 
 #rm *.o
 

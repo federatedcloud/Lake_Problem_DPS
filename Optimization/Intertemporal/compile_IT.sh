@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 cd ~nixuser/Lake_Problem_DPS/Optimization/Intertemporal
 

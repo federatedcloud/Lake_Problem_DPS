@@ -77,7 +77,5 @@ stdenv.mkDerivation {
     cp -n ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
     cp -n ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
     cp -rn ${boost.out}/lib ~/
-    source ~/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh
-    source ~/Lake_Problem_DPS/Optimization/Intertemporal/compile_IT.sh
   '';
 }
