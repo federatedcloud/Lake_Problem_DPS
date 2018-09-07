@@ -9,7 +9,7 @@ fi
 
 mkdir -p ssh
 cd ssh && ssh-keygen -t rsa -f id_rsa.mpi -N '' && cd ..
-echo "StrictHostKeyChecking no" > ssh/config
+printf "StrictHostKeyChecking no\nPasswordAuthentication no" >> ssh/config
 chmod 500 ssh && chmod 400 ssh/*
 
 cd ..
