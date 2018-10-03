@@ -1,0 +1,37 @@
+To Run:
+-------
+
+Optimization (Steps 1-3):
+1. Run DPS Optimization
+
+    qsub run_DPS_opt.sh
+
+2. Run Interteporal Optimization
+
+    qsub run_IT_opt.sh
+
+3. Calculate Runtime Metrics
+
+    sh get_objs.sh,
+    sh find_refSets.sh,
+    sh find_runtime_metrics.sh
+
+Re-evaluation (Steps 4-6):
+4. Generate alternate SOWs
+
+    sh sample_parameters.sh
+
+5. Resimulate DPS and Intertemporal
+
+    cd DPS && qsub resimulateDPS.sh
+    cd ./../Intertemporal && qsub resimulateIT.sh
+
+6. Calculate Robustness
+
+    module load python-2.7.5
+    python calcRobustness.py
+
+7. Figure Generation
+
+    python makeAllFigures.py
+
