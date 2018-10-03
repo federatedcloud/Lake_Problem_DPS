@@ -1,6 +1,11 @@
 ARG BASEOS
 FROM nix_${BASEOS}_base:44cce3d948f38408bc97addb699ba02cc479df8e
 
+# variables exported from https://github.com/federatedcloud/NixTemplates/blob/develop/Dockerfile-Base
+# $nixuser
+# $nixenv
+# $ENVSDIR
+
 USER root
 ARG ADDUSER
 
@@ -8,6 +13,12 @@ COPY Docker/config.nix $HOME/.config/nixpkgs/
 COPY Docker/dev-env.nix $ENVSDIR/
 COPY Docker/persist-env.sh $ENVSDIR/
 RUN chown -R $nixuser:$nixuser $ENVSDIR
+
+# for MPI orted daemon to properly spawn on worker containers, we need the orted binary on the noninteractive ssh PATH
+#   for Alpine, some alternatives such as /etc/profile and per user ssh environment were attempted but did not succeed
+#   instead we place many links including to the mpi orted binary in a location on the default noninteractive ssh PATH
+RUN for i in $(ls /nixenv/nixuser/.nix-profile/bin) ; do ln -s /nixenv/nixuser/.nix-profile/bin/"$i" /usr/bin ; done
+#RUN sed -i 's|^nixuser.*|nixuser:x:1000:1000::/home/nixuser:/nixenv/nixuser/.nix-profile/bin/bash|' /etc/passwd
 
 #
 # Initialize environment a bit for faster container spinup/use later
@@ -18,6 +29,13 @@ RUN $nixenv && cd /tmp && sh $ENVSDIR/persist-env.sh $ENVSDIR/dev-env.nix
 
 USER root
 
+#
+# Security Note : root login and user environment could be dangerous settings,
+#     these should only be applied to worker nodes (aka cloud VMs) on a private
+#     subnet only, accessed by the user through an ssh bastion server.
+#     Explicit sshd port exposure under common deployments means that Docker
+#     default network isolation does not help in this regard. Ssh port
+#     listening is necessary in order to launch mpi processes.
 #
 # The below method isn't ideal, as it could break - better to copy in an sshd_config file
 # or somehow use nix to configure sshd
@@ -31,6 +49,7 @@ RUN SSHD_PATH=$(su -c "$nixenv && nix-build '<nixpkgs>' --no-build-output --no-o
   mkdir -p /etc/ssh && cp "$SSHD_PATH/etc/ssh/sshd_config" /etc/ssh/sshd_config && \
   mkdir /var/run/sshd && \
   printf "PermitRootLogin yes\n" >> /etc/ssh/sshd_config && \
+  printf "PermitUserEnvironment yes\n" >> /etc/ssh/sshd_config && \
   id -u sshd || ${ADDUSER} sshd && \
   mkdir -p /var/empty/sshd/etc && \
   cd /var/empty/sshd/etc && \
@@ -51,6 +70,8 @@ ADD Docker/ssh/config ${SSHDIR}/config
 ADD Docker/ssh/id_rsa.mpi ${SSHDIR}/id_rsa
 ADD Docker/ssh/id_rsa.mpi.pub ${SSHDIR}/id_rsa.pub
 ADD Docker/ssh/id_rsa.mpi.pub ${SSHDIR}/authorized_keys
+
+ADD Docker/mpi_hostfile ${HOME}/mpi_hostfile
 
 USER root
 

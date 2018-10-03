@@ -9,8 +9,23 @@ fi
 
 mkdir -p ssh
 cd ssh && ssh-keygen -t rsa -f id_rsa.mpi -N '' && cd ..
-printf "StrictHostKeyChecking no\nPasswordAuthentication no" >> ssh/config
-chmod 500 ssh && chmod 400 ssh/*
+
+cat > ssh/config <<EOF
+StrictHostKeyChecking no
+PasswordAuthentication no
+Host c1
+    Hostname x.x.x.x
+    Port 2222
+    User nixuser
+    IdentityFile /home/nixuser/.ssh/id_rsa
+Host c2
+    Hostname x.x.x.x
+    Port 2222
+    User nixuser
+    IdentityFile /home/nixuser/.ssh/id_rsa
+EOF
+
+chmod 700 ssh && chmod 600 ssh/*
 
 cd ..
 
