@@ -1,5 +1,5 @@
 ARG BASEOS
-FROM nix_${BASEOS}_base:44cce3d948f38408bc97addb699ba02cc479df8e
+FROM nix_${BASEOS}_base:f54e2e28ba1013d1cedf4d814276e0b3175c0520
 
 USER root
 ARG ADDUSER
@@ -74,6 +74,8 @@ COPY FigureGeneration ${HOME}/Lake_Problem_DPS/FigureGeneration
 COPY Optimization ${HOME}/Lake_Problem_DPS/Optimization
 COPY Re-evaluation ${HOME}/Lake_Problem_DPS/Re-evaluation
 
+COPY compile.sh ${HOME}/Lake_Problem_DPS
+
 COPY Optimization/moeaframework.h ${HOME}/Lake_Problem_DPS/Optimization/borg
 COPY Optimization/moeaframework.c ${HOME}/Lake_Problem_DPS/Optimization/borg
 
@@ -87,8 +89,7 @@ RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Re-evaluation
 
 USER $nixuser
 COPY Docker/default.nix $ENVSDIR/
-RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix --run ${HOME}/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh
-RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix --run ${HOME}/Lake_Problem_DPS/Optimization/Intertemporal/compile_IT.sh
+RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix --run ${HOME}/Lake_Problem_DPS/compile.sh
 USER root
 
 RUN passwd -d $nixuser
