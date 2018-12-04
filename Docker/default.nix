@@ -1,5 +1,4 @@
 with import <nixpkgs> {};
-# with pkgs.python36Packages;
 let
   MOEAFramework = stdenv.mkDerivation {
     name = "MOEAFramework";
@@ -29,17 +28,6 @@ let
       tar -C $out/ -xzf $src
     '';
   };
-#  Borg = stdenv.mkDerivation {
-#    name = "Borg";
-#    
-#    src = fetchurl {
-#      url = https://sk8foraether@bitbucket.org/dmh309/serial-borg-moea;
-#  };
-#  LakeProblem = stdenv.mkDerivation {
-#    name = "LakeProblem"
-#    
-#    
-#  };
 in
 stdenv.mkDerivation {
   name = "impurePythonEnv";
@@ -53,22 +41,21 @@ stdenv.mkDerivation {
     openmpi
     openssh
     
-    # python packages 
-    python36Full
-    python36Packages.mpi4py
-    python36Packages.numpy    
-    python36Packages.pip
-    python36Packages.scipy
-    python36Packages.virtualenv
+    # python 2.7 packages 
+    python27Full
+    python27Packages.mpi4py
+    python27Packages.numpy    
+    python27Packages.pip
+    python27Packages.scipy
+    python27Packages.virtualenv
     
     #
     # Project code dependencies
     #
+    jdk
     MOEAFramework
     Pareto
     boost
-#    Borg
-#    LakeProblem
     
   ];
   src = null;
