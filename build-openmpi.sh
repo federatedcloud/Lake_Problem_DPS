@@ -12,6 +12,7 @@ echo "NIX_OMPI_IMAGE is $NIX_OMPI_IMAGE"
 docker build \
        --build-arg ADDUSER="$ADDUSER" \
        --build-arg BASEOS="$BASEOS" \
+       --build-arg SSH_PRIVATE_KEY="$(cat ${BITBUCKET_SSH_KEY:="$HOME/.ssh/id_rsa"})" \
        -t "$NIX_OMPI_IMAGE" -f Dockerfile-OpenMPI .
 
 TEST_IMG="${REPO}_${TAG}_TEST"

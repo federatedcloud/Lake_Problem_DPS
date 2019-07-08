@@ -28,12 +28,27 @@ let
       tar -C $out/ -xzf $src
     '';
   };
+  Borg = stdenv.mkDerivation {
+    name = "BorgSource";
+   
+    src = builtins.fetchGit {
+      rev = "2c7702638d42349824e305036fc6eb4a04a8a539";
+      url = "git@bitbucket.org:dmh309/serial-borg-moea.git";
+      ref = "master";
+    };
+  phases = "installPhase"; 
+ 
+  installPhase = ''  
+    mkdir -p $out/
+    cp -r $src/. $out/
+  '';
+  };     
 in
 stdenv.mkDerivation {
   name = "impurePythonEnv";
   buildInputs = [
     nix
-    bash
+    bash 
     
     # MPI-related packages
     binutils
@@ -56,13 +71,16 @@ stdenv.mkDerivation {
     MOEAFramework
     Pareto
     boost
-    
+    Borg
+
   ];
   src = null;
   shellHook = ''
     export LANG=en_US.UTF-8
-    cp -n ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
-    cp -n ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
-    cp -rn ${boost.out}/lib ~/
+    ln -sfn ${MOEAFramework.out}/MOEAFramework-2.12-Demo.jar ~/Lake_Problem_DPS/Optimization
+    ln -sfn ${Pareto.out}/pareto.py-1.1.1-3/pareto.py ~/Lake_Problem_DPS/Optimization
+    ln -sfn ${boost.out}/lib ~/
+    ln -sfn ${Borg}/* ~/Lake_Problem_DPS/Optimization/borg
   '';
 }
+

@@ -51,6 +51,13 @@ Start 3 MPI nodes:
 ```
 Note this will call `Docker/build.sh`, so no need to do both.
 
+**Testing OpenMPI with optional custom ssh_key for Borg** 
+
+Note that without specifying a location (the BITBUCKET_SSH_KEY), it will assume the ssh for bitbucket is set up in the standard location (e.g. `~/.ssh/id_rsa`)
+```bash
+    BITBUCKET_SSH_KEY=/path/to/id_rsa source docker-compose-openmpi.sh up --scale mpi_head=1 --scale mpi_node=3
+```
+**Running Tests**
 Now from another terminal on the host system you can connect to the head node, start the `nix-shell`, and run the demo:
 ```bash
     docker exec -u nixuser -it lake_problem_dps_mpi_head_1 /bin/sh

@@ -23,6 +23,8 @@ Host c2
     Port 2222
     User nixuser
     IdentityFile /home/nixuser/.ssh/id_rsa
+Host bitbucket.org
+    IdentityFile /home/nixuser/tmp_rsa
 EOF
 
 chmod 700 ssh && chmod 600 ssh/*

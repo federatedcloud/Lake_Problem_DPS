@@ -97,16 +97,23 @@ COPY Optimization ${HOME}/Lake_Problem_DPS/Optimization
 COPY Re-evaluation ${HOME}/Lake_Problem_DPS/Re-evaluation
 COPY run_lake_problem.sh ${HOME}/Lake_Problem_DPS
 
-COPY Optimization/moeaframework.h ${HOME}/Lake_Problem_DPS/Optimization/borg
-COPY Optimization/moeaframework.c ${HOME}/Lake_Problem_DPS/Optimization/borg
+COPY Optimization/moeaframework.h ${HOME}/Lake_Problem_DPS/Optimization/borg/
+COPY Optimization/moeaframework.c ${HOME}/Lake_Problem_DPS/Optimization/borg/
 
 RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/
 
 RUN chmod +x ${HOME}/Lake_Problem_DPS/run_lake_problem.sh
 
 USER $nixuser
+
+ARG SSH_PRIVATE_KEY
 COPY Docker/default.nix $ENVSDIR/
-RUN $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix --run ${HOME}/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh
+#TODO: Running echo and rm in the same line seems to be fine. If this method does not work, I would look into Multi-stage builds in Docker 
+RUN echo "$SSH_PRIVATE_KEY" > ${HOME}/tmp_rsa && chmod 600 ${HOME}/tmp_rsa && \
+  $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix \
+  --run ${HOME}/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh && \ 
+  rm -f ${HOME}/tmp_rsa && sed -i '$d' ${SSHDIR}/config | sed -i '$d' ${SSHDIR}/config   
+  
 USER root
 
 RUN passwd -d $nixuser
