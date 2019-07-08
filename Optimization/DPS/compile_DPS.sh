@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 cd /home/nixuser/Lake_Problem_DPS/Optimization/borg
 

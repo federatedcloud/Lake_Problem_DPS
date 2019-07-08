@@ -90,6 +90,7 @@ RUN chown -R ${nixuser}:${nixuser} ${HOME}/.openmpi
 # Copy Lake_Problem_DPS code
 # ------------------------------------------------------------
 
+# Don't copy the entire folder to avoid adding Docker folder inside container
 COPY DataInPaper ${HOME}/Lake_Problem_DPS/DataInPaper
 COPY FigureGeneration ${HOME}/Lake_Problem_DPS/FigureGeneration
 COPY Optimization ${HOME}/Lake_Problem_DPS/Optimization
@@ -99,13 +100,9 @@ COPY run_lake_problem.sh ${HOME}/Lake_Problem_DPS
 COPY Optimization/moeaframework.h ${HOME}/Lake_Problem_DPS/Optimization/borg
 COPY Optimization/moeaframework.c ${HOME}/Lake_Problem_DPS/Optimization/borg
 
-RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/DataInPaper
-RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/FigureGeneration
-RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Optimization
-RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/Re-evaluation
+RUN chown -R ${nixuser}:${nixuser} ${HOME}/Lake_Problem_DPS/
 
-
-# TODO: remove borg before making public.  Temporary for testing.
+RUN chmod +x ${HOME}/Lake_Problem_DPS/run_lake_problem.sh
 
 USER $nixuser
 COPY Docker/default.nix $ENVSDIR/
