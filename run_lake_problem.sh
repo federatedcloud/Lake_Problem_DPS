@@ -1,17 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -ux
 
 echo "current status: Incomplete"
-exit 1
+#exit 1
 
 #To Run:
 #-------
 
 export START_DIR="$(pwd)"
 
-if [ "$(whoami)" -ne "nixuser" ] ; then
+if [ "$(whoami)" != "nixuser" ] ; then
     echo "please run as nixuser"
     exit 1
+else
+    export USER="nixuser"
 fi    
 
 #TODO clean up script for clean resumption without old data contamination
@@ -32,16 +34,16 @@ export MPI_ARGS=""
 # Jetstream Openstack API domain
 # export MPI_ARGS="--hostfile /home/nixuser/mpi_hostfile --mca btl self,tcp --mca btl_tcp_if_include ens3"
 
-#Optimization (Steps 1-3):
-#1. Run DPS Optimization
+# Optimization (Steps 1-3):
+# -------------------------
 
-#    qsub run_DPS_opt.sh
+# 1. Run DPS Optimization
+
 
 # formerly PBS_O_WORKDIR , best stored on NFS or similar networked file system to share executable and result files for analysis
-export OPT_DIR=/home/$USER/Lake_Problem_DPS/Optimization
+export OPT_DIR=/home/${USER}/Lake_Problem_DPS/Optimization
 export DPS_DIR="${OPT_DIR}/DPS"
 export DPS_EXEC="${DPS_DIR}/LakeDPSparallel"
-#run_DPS_opt.sh
 #mpirun --hostfile /home/nixuser/mpi_hostfile --mca btl self,tcp --mca btl_tcp_if_include ens3 /home/nixuser/Lake_Problem_DPS/Optimization/DPS/LakeDPSparallel 1 2000000
 [ -d "${DPS_DIR}" ] || {
     echo "directory ${DPS_DIR} not present, exiting"
@@ -51,12 +53,17 @@ export DPS_EXEC="${DPS_DIR}/LakeDPSparallel"
     echo "executable ${DPS_EXEC} not present, exiting"
     exit 1
 }
+
+# Must be in that directory to run
+cd $DPS_DIR
+
 for i in $SEQSET
 do
     mpirun $MPI_ARGS $DPS_EXEC $i $DPS_LIMIT
 done
-export DPS_OUTPUT_FILE="$(ls $DPS_DIR/sets | head -n 1)"
-export DPS_OUTPUT_LINES="$(wc -l $DPS_OUTPUT_FILE)"
+
+export DPS_OUTPUT_LINES="$(wc -l $DPS_DIR/sets/LakeDPS_*.set)"
+echo $DPS_OUTPUT_LINES
 echo "DPS output file had ${DPS_OUTPUT_LINES} lines"
 
 #2. Run Interteporal Optimization
@@ -73,12 +80,17 @@ export IT_EXEC="${IT_DIR}/LakeITparallel"
     echo "executable ${IT_EXEC} not present, exiting"
     exit 1
 }
+
+# Must be in that directory to run
+cd $IT_DIR
+
 for i in $SEQSET
 do
     mpirun $MPI_ARGS $IT_EXEC $i $IT_LIMIT
 done
 export IT_OUTPUT_FILE="$(ls $IT_DIR/sets | head -n 1)"
 export IT_OUTPUT_LINES="$(wc -l $IT_OUTPUT_FILE)"
+echo $IT_OUTPUT_LINES
 echo "IT output file had ${IT_OUTPUT_LINES} lines"
 
 
