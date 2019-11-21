@@ -112,6 +112,8 @@ COPY Docker/default.nix $ENVSDIR/
 RUN echo "$SSH_PRIVATE_KEY" > ${HOME}/tmp_rsa && chmod 600 ${HOME}/tmp_rsa && \
   $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix \
   --run ${HOME}/Lake_Problem_DPS/Optimization/DPS/compile_DPS.sh && \ 
+  $nixenv && cd /tmp && nix-shell $ENVSDIR/default.nix \
+  --run ${HOME}/Lake_Problem_DPS/Optimization/Intertemporal/compile_IT.sh && \ 
   rm -f ${HOME}/tmp_rsa && sed -i '$d' ${SSHDIR}/config | sed -i '$d' ${SSHDIR}/config   
   
 USER root
