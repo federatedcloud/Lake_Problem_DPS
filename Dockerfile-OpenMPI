@@ -96,6 +96,7 @@ COPY FigureGeneration ${HOME}/Lake_Problem_DPS/FigureGeneration
 COPY Optimization ${HOME}/Lake_Problem_DPS/Optimization
 COPY Re-evaluation ${HOME}/Lake_Problem_DPS/Re-evaluation
 COPY run_lake_problem.sh ${HOME}/Lake_Problem_DPS
+COPY full_run.py ${HOME}/Lake_Problem_DPS
 
 COPY Optimization/moeaframework.h ${HOME}/Lake_Problem_DPS/Optimization/borg/
 COPY Optimization/moeaframework.c ${HOME}/Lake_Problem_DPS/Optimization/borg/
