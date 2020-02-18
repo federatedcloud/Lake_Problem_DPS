@@ -9,7 +9,7 @@ do
   mpirun ./LakeDPSparallel $i 2000 #00
 done
 
-cd /home/nixuser/Lake_Problem_DPS/Intertemporal/
+cd /home/nixuser/Lake_Problem_DPS/Optimization/Intertemporal/
 
 for i in {1..50}
 do
