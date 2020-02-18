@@ -37,19 +37,20 @@ def run_re_eval():
 def run_DPS(seqset, DPS_limit, mpi_args=""):
     # Runs the Direct Policy Search portion of Optimization
     print("Running DPS...")
-    
+    try_cmd("cd ./Optimization/DPS")
     for x in range(0,seqset):
-        try_cmd("mpirun ./Optimization/DPS/LakeDPSparallel %s %s"%(x,DPS_limit))
+        try_cmd("mpirun ./LakeDPSparallel %s %s"%(x,DPS_limit))
     
     print("DPS complete")
 
 def run_IT(seqset, IT_limit, mpi_args=""):
     # Runs the Intertemporal portion of Optimization
     print("Running IT...")
-    
+    try_cmd("cd ./../Intertemporal")
     for x in range(0,seqset):
         try_cmd("mpirun ./Optimization/IT/LakeITparallel %s %s"(x,IT_limit))
     
+    try_cmd("cd /home/nixuser/Lake_Problem_DPS")
     print("IT complete")
 
 def check_depends():
