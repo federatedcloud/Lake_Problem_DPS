@@ -16,21 +16,40 @@ def main():
 
     run_IT(5, 2000) #TESTING
     #run_IT(50, 2000000) #PRODUCTION
-
-
+    
+    run_re_eval()
+    
+    run_fig_gen()
+    
     sys.exit("\n Run Complete \n===")
 
+def run_fig_gen():
+    try_cmd("cd ./../FigureGeneration")
+    try_cmd("python makeAllFigures.py")
+
+def run_re_eval():
+    try_cmd("cd Re-evaluation")
+    try_cmd("sh ./sample_parameters.sh")
+    try_cmd("cd ./DPS && source /etc/profile.d/modules.sh && mpirun python resimulateDPS.py")
+    try_cmd("cd ./../Intertemporal && source /etc/profile.d/modules.sh && mpirun python resimulateIT.py")
+    try_cmd("cd ./.. && python calcRobustness.py")
 
 def run_DPS(seqset, DPS_limit, mpi_args=""):
     # Runs the Direct Policy Search portion of Optimization
     print("Running DPS...")
-
+    
+    for x in range(0,seqset):
+        try_cmd("mpirun ./Optimization/DPS/LakeDPSparallel %s %s"%(x,DPS_limit))
+    
     print("DPS complete")
 
 def run_IT(seqset, IT_limit, mpi_args=""):
     # Runs the Intertemporal portion of Optimization
     print("Running IT...")
-
+    
+    for x in range(0,seqset):
+        try_cmd("mpirun ./Optimization/IT/LakeITparallel %s %s"(x,IT_limit))
+    
     print("IT complete")
 
 def check_depends():

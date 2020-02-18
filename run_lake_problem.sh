@@ -62,7 +62,7 @@ do
     mpirun $MPI_ARGS $DPS_EXEC $i $DPS_LIMIT
 done
 
-export DPS_OUTPUT_LINES="$(wc -l $DPS_DIR/sets/LakeDPS_*.set)"
+export DPS_OUTPUT_LINES="$(wc -l < $DPS_DIR/sets/LakeDPS_*.set)"
 echo $DPS_OUTPUT_LINES
 echo "DPS output file had ${DPS_OUTPUT_LINES} lines"
 
@@ -88,8 +88,8 @@ for i in $SEQSET
 do
     mpirun $MPI_ARGS $IT_EXEC $i $IT_LIMIT
 done
-export IT_OUTPUT_FILE="$(ls $IT_DIR/sets | head -n 1)"
-export IT_OUTPUT_LINES="$(wc -l $IT_OUTPUT_FILE)"
+
+export IT_OUTPUT_LINES="$(wc -l < $IT_DIR/sets/LakeIT_*.set)"
 echo $IT_OUTPUT_LINES
 echo "IT output file had ${IT_OUTPUT_LINES} lines"
 
